@@ -1,0 +1,6 @@
+import { create } from "zustand";
+export interface ChatMessage { id: string; role: "user" | "assistant"; content: string; timestamp: string; }
+export interface UserProfile { id: string; name: string; email: string; isAuthenticated: boolean; tier: "free" | "pro" | "premium"; usageCount: number; freeLimit: number; }
+interface AppStore { user: UserProfile; chatMessages: ChatMessage[]; isLoading: boolean; setUser: (u: Partial<UserProfile>) => void; addChatMessage: (m: ChatMessage) => void; clearChatMessages: () => void; setLoading: (l: boolean) => void; logout: () => void; }
+const D: UserProfile = { id: "", name: "", email: "", isAuthenticated: false, tier: "free", usageCount: 0, freeLimit: 3 };
+export const useAppStore = create<AppStore>((set) => ({ user: D, chatMessages: [], isLoading: false, setUser: (u) => set((s) => ({ user: { ...s.user, ...u } })), addChatMessage: (m) => set((s) => ({ chatMessages: [...s.chatMessages, m] })), clearChatMessages: () => set({ chatMessages: [] }), setLoading: (l) => set({ isLoading: l }), logout: () => set({ user: D, chatMessages: [] }) }));
